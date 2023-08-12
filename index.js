@@ -54,7 +54,7 @@ ws.on('message', function incoming(data) {
 // Continue connect with socket
 const heartBeat = (ms) => {
 	return setInterval(() => {
-		ws.send(JSON.stringify({ p: 2, d: null }));
+		ws.send(JSON.stringify({ op: 2, d: null }));
 	}, ms);
 }
 
