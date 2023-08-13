@@ -1,4 +1,4 @@
-# discord-monitor-websocketet
+# discord-monitor-websocket
 Reset nickname when someone changed by detect the event from listen websocket.
 
 # Init 
