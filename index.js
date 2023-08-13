@@ -2,6 +2,9 @@ const Websocket = require('ws');
 const axios = require('axios');
 require('dotenv').config();
 
+// keep our service alive
+require('./keep_alive.js');
+
 const ws = new Websocket('wss://gateway.discord.gg/');
 
 const token = process.env.USER_TOKEN;
@@ -30,6 +33,7 @@ ws.on('open', function open() {
 ws.on('message', function incoming(data) {
 	let payload = JSON.parse(data);
 
+	console.log(payload);
 	// https://github.com/meew0/discord-api-docs-1/blob/master/docs/topics/GATEWAY.md
 	const { op, d, s, t } = payload;
 
