@@ -2,9 +2,6 @@ const Websocket = require('ws');
 const axios = require('axios');
 require('dotenv').config();
 
-// keep our service alive
-require('./keep_alive.js');
-
 const ws = new Websocket('wss://gateway.discord.gg/');
 
 const token = process.env.USER_TOKEN;
