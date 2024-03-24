@@ -1,5 +1,8 @@
 # discord-monitor-websocket
-Reset nickname when someone changed by detect the event from listen websocket.
+subscribe specify events in discord
+
+- nickname changed by others will reset
+- store image to google drive which contain human
 
 # Init 
 `yarn install`
@@ -12,7 +15,15 @@ CHANNEL_ID=<Specify-Channel-Id>
 USER_ID=<Discord-User-Id>
 USER_TOKEN=<Discord-Token>
 NICKNAME=<Nickname>
+GUILD_ID=<Discord-Server-Id>
+DRIVE_FOLDER_ID=<Google-Drive-Folder>
 ```
+
+## Google Drive
+1. enable google drive api
+2. create service account
+3. download credentials and save to serviceAccountKey.json
+4. allow sercice account can access upload folder
 
 # Run
 `node .`
