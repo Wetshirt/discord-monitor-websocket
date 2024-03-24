@@ -2,7 +2,10 @@ const Websocket = require('ws');
 const axios = require('axios');
 require('dotenv').config();
 const _ = require('lodash');
+
 const isContainFace = require('./lib/face-detection');
+const SaveGoogleDrive = require('./lib/google-drive');
+
 const ws = new Websocket('wss://gateway.discord.gg/');
 
 const token = process.env.USER_TOKEN;
@@ -56,6 +59,7 @@ ws.on('message', async function incoming(data) {
     }
     // Todo: connect with google drive
     console.log('[Face Detection]: True')
+    SaveGoogleDrive(attachment);
   }
   // fix name if changed by others
   if (t === 'GUILD_MEMBER_UPDATE' && d.user.id === userId) {
