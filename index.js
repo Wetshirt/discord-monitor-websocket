@@ -14,8 +14,9 @@ const channelId = process.env.CHANNEL_ID;
 const nickName = process.env.NICKNAME;
 const serverId = process.env.GUILD_ID
 
+// eslint-disable-next-line no-unused-vars
 let interval = 0;
-payload = {
+const payload = {
   op: 2,
   d: {
     token: token,
@@ -36,13 +37,14 @@ ws.on('message', async function incoming(data) {
   let payload = JSON.parse(data);
 
   // https://github.com/meew0/discord-api-docs-1/blob/master/docs/topics/GATEWAY.md
-  const { op, d, s, t } = payload;
+  const { op, d, t } = payload;
 
   switch (op) {
-    case 10:
+    case 10: {
       const { heartbeat_interval } = d;
       interval = heartBeat(heartbeat_interval);
       break;
+    }
   }
 
   // only effect at specify server
