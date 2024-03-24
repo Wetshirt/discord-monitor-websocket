@@ -11,7 +11,7 @@
     "eslint-plugin-import": "^2.25.2"
   },
   "dependencies": {
-    "@tensorflow/tfjs-node": "^4.17.0",
+    "@tensorflow/tfjs-node": "3.18.0",
     "@vladmandic/face-api": "^1.7.13",
     "axios": "^1.4.0",
     "canvas": "^2.11.2",
