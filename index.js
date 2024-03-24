@@ -2,15 +2,7 @@ const Websocket = require('ws');
 const axios = require('axios');
 require('dotenv').config();
 const _ = require('lodash');
-
-// face detec module
-require('@tensorflow/tfjs-node');
-const faceapi = require('@vladmandic/face-api');
-const canvas = require("canvas");
-const { Canvas, Image, ImageData } = canvas;
-faceapi.env.monkeyPatch({ Canvas, Image, ImageData })
-faceapi.nets.ssdMobilenetv1.loadFromDisk('models');
-
+const isContainFace = require('./lib/face-detection');
 const ws = new Websocket('wss://gateway.discord.gg/');
 
 const token = process.env.USER_TOKEN;
@@ -37,7 +29,7 @@ ws.on('open', async function open() {
   ws.send(JSON.stringify(payload));
 });
 
-ws.on('message', function incoming(data) {
+ws.on('message', async function incoming(data) {
   let payload = JSON.parse(data);
 
   // https://github.com/meew0/discord-api-docs-1/blob/master/docs/topics/GATEWAY.md
@@ -58,11 +50,12 @@ ws.on('message', function incoming(data) {
   // image test
   const attachments = _.map(_.get(d, 'attachments'), 'url');
   for (const attachment of attachments) {
-    if (!isContainFace(attachment)) {
+    if (!await isContainFace(attachment)) {
+      console.log('[Face Detection]: False')
       continue;
     }
     // Todo: connect with google drive
-    console.log('save image');
+    console.log('[Face Detection]: True')
   }
   // fix name if changed by others
   if (t === 'GUILD_MEMBER_UPDATE' && d.user.id === userId) {
@@ -94,12 +87,4 @@ async function changeNickName(channelId, nickName) {
 
   await axios.patch(`https://discord.com/api/v9/guilds/${channelId}/members/@me`, data, config);
   console.log('change nickname');
-}
-
-// detect if an image contain face by its url
-async function isContainFace(url) {
-  const img = await canvas.loadImage(url);
-  const detections = await faceapi.detectAllFaces(img);
-
-  return detections.length > 0 ? true : false;
 }
