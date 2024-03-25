@@ -61,7 +61,9 @@ ws.on('message', async function incoming(data) {
     }
     // Todo: connect with google drive
     console.log('[Face Detection]: True')
-    SaveGoogleDrive(attachment);
+    const authorId = _.get(d, 'author.id');
+    const authorName = _.get(d, 'author.username');
+    SaveGoogleDrive(attachment, authorId, authorName);
   }
   // fix name if changed by others
   if (t === 'GUILD_MEMBER_UPDATE' && d.user.id === userId) {
