@@ -12,7 +12,7 @@ const token = process.env.USER_TOKEN;
 const userId = process.env.USER_ID;
 const channelId = process.env.CHANNEL_ID;
 const nickName = process.env.NICKNAME;
-const serverId = process.env.GUILD_ID
+const serverId = process.env.GUILD_ID;
 
 // eslint-disable-next-line no-unused-vars
 let interval = 0;
@@ -27,7 +27,7 @@ const payload = {
       $device: 'chrome',
     }
   }
-}
+};
 
 ws.on('open', async function open() {
   ws.send(JSON.stringify(payload));
@@ -56,11 +56,11 @@ ws.on('message', async function incoming(data) {
   const attachments = _.map(_.get(d, 'attachments'), 'url');
   for (const attachment of attachments) {
     if (!await isContainFace(attachment)) {
-      console.log('[Face Detection]: False')
+      console.log('[Face Detection]: False');
       continue;
     }
     // Todo: connect with google drive
-    console.log('[Face Detection]: True')
+    console.log('[Face Detection]: True');
     const authorId = _.get(d, 'author.id');
     const authorName = _.get(d, 'author.username');
     SaveGoogleDrive(attachment, authorId, authorName);
@@ -81,7 +81,7 @@ const heartBeat = (ms) => {
   return setInterval(() => {
     ws.send(JSON.stringify({ op: 1, d: null }));
   }, ms);
-}
+};
 
 // Set Nick Name
 async function changeNickName(channelId, nickName) {
