@@ -4,12 +4,13 @@ const _ = require('lodash');
 
 const isContainFace = require('./lib/face-detection');
 const SaveGoogleDrive = require('./lib/google-drive');
-const changeNickName = require('./lib/discord-rest');
+const { changeNickName, reactEmoji } = require('./lib/discord-rest');
 
 const token = process.env.USER_TOKEN;
 const userId = process.env.USER_ID;
 const nickName = process.env.NICKNAME;
 const serverId = process.env.GUILD_ID;
+const reactEmojiUsers = JSON.parse(process.env.REACT_EMOJI_USERS);
 
 async function init() {
   const ws = new Websocket('wss://gateway.discord.gg/');
@@ -52,20 +53,27 @@ async function init() {
       return;
     }
 
-    // image test
-    const attachments = _.map(_.get(d, 'attachments'), 'url');
-    for (const attachment of attachments) {
-      if (!await isContainFace(attachment)) {
-        console.log('[Face Detection]: False');
-        continue;
-      }
-      // Todo: connect with google drive
-      console.log('[Face Detection]: True');
+    if (t === 'MESSAGE_CREATE') {
       const authorId = _.get(d, 'author.id');
       const authorName = _.get(d, 'author.username');
-      SaveGoogleDrive(attachment, authorId, authorName);
+      // image test
+      const attachments = _.map(_.get(d, 'attachments'), 'url');
+      for (const attachment of attachments) {
+        if (!await isContainFace(attachment)) {
+          console.log('[Face Detection]: False');
+          continue;
+        }
+        // Todo: connect with google drive
+        console.log('[Face Detection]: True');
+        SaveGoogleDrive(attachment, authorId, authorName);
+      }
+
+      //react emoji
+      if (reactEmojiUsers.includes(authorId)) {
+        reactEmoji(d.channel_id, d.id, '👎');
+      }
     }
-    
+
     // fix name if changed by others
     if (t === 'GUILD_MEMBER_UPDATE' && d.user.id === userId) {
       // Nick name not changed
