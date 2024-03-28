@@ -20,7 +20,7 @@ async function init() {
     op: 2,
     d: {
       token: token,
-      intents: 513,
+      intents: 4194303,
       properties: {
         $os: 'linux',
         $browser: 'chrome',
