@@ -15,8 +15,9 @@ jobs:
       with:
         node-version: '16'
 
-    - name: Setup Env
-      env:
+    - name: Make envfile
+      uses: SpicyPizza/create-envfile@v2.0
+      with:
         USER_TOKEN: ${{ secrets.USER_TOKEN }}
         CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
         GUILD_ID: ${{ secrets.GUILD_ID }}
