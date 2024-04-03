@@ -3,7 +3,7 @@ name: Jest Tests and Coverage
 on: [push, pull_request]
 
 jobs:
-  test:
+  unit-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,6 +24,9 @@ jobs:
         USER_TOKEN: ${{ secrets.USER_TOKEN }}
         CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
         GUILD_ID: ${{ secrets.GUILD_ID }}
+        TEST_FACE_FOLDER: ${{ secrets.TEST_FACE_FOLDER }}
+        GOOGLE_CLIENT_EMAIL: ${{ secrets.GOOGLE_CLIENT_EMAIL }}
+        GOOGLE_PRIVATE_KEY: ${{ secrets.GOOGLE_PRIVATE_KEY }}
 
     - name: Upload coverage report
       uses: actions/upload-artifact@v2
