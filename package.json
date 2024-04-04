@@ -23,6 +23,8 @@
     "ws": "^8.13.0"
   },
   "scripts": {
-    "test": "jest --coverage"
-  }
+    "test": "jest --coverage",
+    "lint": "eslint ."
+  },
+  "eslintIgnore": ["__tests__/**/*.js"]
 }
