@@ -9,3 +9,38 @@ on:
 
 jobs:
   build:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build Docker image
+      run:  >
+        docker build
+        --build-arg USER_ID=${{ secrets.USER_ID }}
+        --build-arg USER_TOKEN=${{ secrets.USER_TOKEN }}
+        --build-arg NICKNAME=${{ secrets.NICKNAME }}
+        --build-arg GUILD_ID=${{ secrets.GUILD_ID }}
+        --build-arg DRIVE_FOLDER_ID=${{ secrets.DRIVE_FOLDER_ID }}
+        --build-arg REACT_EMOJI_USERS='${{ secrets.REACT_EMOJI_USERS }}'
+        --build-arg GOOGLE_CLIENT_EMAIL=${{ secrets.GOOGLE_CLIENT_EMAIL }}
+        --build-arg GOOGLE_PRIVATE_KEY='${{ secrets.GOOGLE_PRIVATE_KEY }}'
+        -t ${{ secrets.HARBOR_REGISTRY_URL }}/discord-monitor/monitor:latest .
+
+    - name: Insecure Docker Repository
+      run: |
+        sudo truncate -s-2 /etc/docker/daemon.json
+        echo ", \"insecure-registries\": [\"${{ secrets.HARBOR_REGISTRY_URL }}\"]}" | sudo tee -a /etc/docker/daemon.json
+        sudo systemctl restart docker
+
+    - name: Log in to Harbor Registry
+      uses: docker/login-action@v3
+      with:
+        registry: http://${{ secrets.HARBOR_REGISTRY_URL }}
+        username: ${{ secrets.HARBOR_USERNAME }}
+        password: ${{ secrets.HARBOR_PASSWORD }}
+
+    - name: Push Docker image to Harbor
+      run: docker push ${{ secrets.HARBOR_REGISTRY_URL }}/discord-monitor/monitor:latest
+      
