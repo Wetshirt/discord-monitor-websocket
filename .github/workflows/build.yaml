@@ -1,0 +1,11 @@
+name: Build and Push Docker Image to Harbor
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: environment
+        required: true
+
+jobs:
+  build:
