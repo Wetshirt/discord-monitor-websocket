@@ -18,7 +18,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.REMOTE_PORT }}
         script: |
-          docker pull ${{ secrets.REMOTE_HOST }}:secrets.REMOTE_PORT/discord-monitor/monitor:latest
+          docker pull ${{ secrets.REMOTE_HOST }}:${{ secrets.REMOTE_PORT }}/discord-monitor/monitor:latest
           if docker ps -a --format '{{.Names}}' | grep -Eq 'monitor-service'; then
             echo "Container exists"
             docker stop monitor-service
