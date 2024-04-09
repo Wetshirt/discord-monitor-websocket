@@ -13,7 +13,7 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
     - name: pull image
-      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker pull {{ secrets.SSH_HOST }}:80/discord-monitor/monitor:latest"
+      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker pull ${{ secrets.SSH_HOST }}:80/discord-monitor/monitor:latest"
     - name: cleanup
       run: rm -rf ~/.ssh
       
